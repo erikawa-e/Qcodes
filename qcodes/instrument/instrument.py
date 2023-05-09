@@ -211,9 +211,12 @@ class Instrument(InstrumentBase, metaclass=InstrumentMeta):
         name = instance.name
         # First insert this instrument in the record of *all* instruments
         # making sure its name is unique
+        # Ash change -> replaces old instrument if the name is the same as another instrument
         existing_instr = cls._all_instruments.get(name)
         if existing_instr:
-            raise KeyError(f"Another instrument has the name: {name}")
+        #    raise KeyError(f"Another instrument has the name: {name}")
+            existing_instr.close()
+        
 
         cls._all_instruments[name] = instance
 
