@@ -39,7 +39,7 @@ class RohdeSchwarzSGS100A(VisaInstrument):
                            get_cmd='SOUR:FREQ?',
                            set_cmd='SOUR:FREQ {:.2f}',
                            get_parser=float,
-                           vals=vals.Numbers(1e6, 20e9))
+                           vals=vals.Numbers(1e6, 720e9))#needed for multiplication x12 tripler
         self.add_parameter(name='phase',
                            label='Phase',
                            unit='deg',
@@ -77,6 +77,30 @@ class RohdeSchwarzSGS100A(VisaInstrument):
                            get_cmd='SOUR:PULM:SOUR?',
                            set_cmd='SOUR:PULM:SOUR {}',
                            vals=vals.Enum('INT', 'EXT', 'int', 'ext'))
+        self.add_parameter('freqmod_state',
+                           label='Frequency Modulation',
+                           get_cmd=':SOUR:FM:STAT?',
+                           set_cmd=':SOUR:FM:STAT {}',
+                           val_mapping=create_on_off_val_mapping(on_val='1',
+                                                                 off_val='0'))
+        
+        self.add_parameter("freqmod_amplitude",
+                           label="Frequency moduation amplitude",
+                           get_cmd=":SOUR:FM:DEV?",
+                           set_cmd="SOUR:FM:DEV {:.2f}",
+                           get_parser=float,
+                           vals=vals.Numbers()
+                           )
+        
+        self.add_parameter("LFGen_frequency",
+                           label="Low frequency generator frequency",
+                           unit="Hz",
+                           get_cmd="SOUR:LFO1:FREQ?",
+                           set_cmd="SOUR:LFO1:FREQ {:.2f}",
+                           get_parser=float,
+                           vals=vals.Numbers(),
+                           docstring="Low frequency generator frequency is the frequency of AM or FM.")
+        
         self.add_parameter('ref_osc_source',
                            label='Reference Oscillator Source',
                            get_cmd='SOUR:ROSC:SOUR?',
@@ -144,6 +168,7 @@ class RohdeSchwarzSGS100A(VisaInstrument):
         self.add_function('run_self_tests', call_cmd='*TST?')
 
         self.connect_message()
+
 
     def on(self) -> None:
         self.status('on')
