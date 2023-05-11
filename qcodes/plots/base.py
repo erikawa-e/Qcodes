@@ -1,5 +1,6 @@
 """
 Deprecated
+test
 """
 from qcodes.utils import issue_deprecation_warning
 
