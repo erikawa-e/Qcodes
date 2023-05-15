@@ -34,9 +34,16 @@ class Single(MultiParameter):
 
     def get_raw(self) -> tuple:
         res = self.instrument._get_single()
-        c = float(res[0].split(" ")[1])
-        l = float(res[1].split(" ")[1])
-        v = float(res[2].split(" ")[0][2:])        
+        try:
+            c = float(res[0].split("=")[1].split(" ")[0])
+        except ValueError:
+            c = float(res[0].split("=")[1].split(" ")[1])            
+        try:
+            l = float(res[1].split("=")[1].split(" ")[0])
+        except ValueError:
+            l = float(res[1].split("=")[1].split(" ")[1])
+
+        v = float(res[2].split("=")[1].split(" ")[0])        
         return (c, l, v)
 
 class AH2550(VisaInstrument):
@@ -84,10 +91,19 @@ class AH2550(VisaInstrument):
         return self.ask("SINGLE").split(",")[:-1]
     
     def _get_capacitance(self)-> float:
-        return float(self._get_single()[0].split(" ")[1])
+        
+        a = self._get_single()[0]
+        try:
+            return float(a.split("=")[1].split(" ")[0])
+        except ValueError:
+            return float(a.split("=")[1].split(" ")[1])
     
     def _get_loss(self)-> float:
-        return float(self._get_single()[1].split(" ")[1])
+        a = self._get_single()[1]
+        try:
+            return float(a.split("=")[1].split(" ")[0])
+        except ValueError:
+            return float(a.split("=")[1].split(" ")[1])
     
     def _show(self, param: str) -> str: #maybe I will make it so it can be used with partial instead of individual commands for each param later
         return self.ask(f"SHOW {param}")
