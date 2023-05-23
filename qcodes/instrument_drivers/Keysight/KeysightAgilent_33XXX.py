@@ -309,6 +309,7 @@ class WaveformGenerator_33XXX(KeysightErrorQueueMixin, VisaInstrument):
                           '33512B': 2,
                           '33522B': 2,
                           '33622A': 2,
+                          '33509B': 1,
                           '33510B': 2,
                           }
 
@@ -318,6 +319,7 @@ class WaveformGenerator_33XXX(KeysightErrorQueueMixin, VisaInstrument):
                            '33250A': 80e6,
                            '33522B': 30e6,
                            '33622A': 120e6,
+                           '33509B': 20e6,
                            '33510B': 20e6,
                           }
 

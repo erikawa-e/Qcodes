@@ -339,7 +339,7 @@ class SpectrumAnalyzerMode(InstrumentChannel):
         """
         Sets up the Swept SA measurement sweep for Spectrum Analyzer Mode.
         """
-        self.root_instrument.mode("'SANALYZER'")
+        self.root_instrument.mode("SANALYZER")
         if "SAN" in self.root_instrument._available_meas():
             self.root_instrument.measurement("SAN")
         else:
@@ -642,9 +642,9 @@ class FSV3030(VisaInstrument):
             docstring="Sets up format of data received"
         )
 
-        if "'SANALYZER'" in self._available_modes():
-            sa_mode = SpectrumAnalyzerMode(self, name="'SANALYZER'")
-            self.add_submodule("'SANALYZER'", sa_mode)
+        if "SANALYZER" in self._available_modes():
+            sa_mode = SpectrumAnalyzerMode(self, name="SANALYZER")
+            self.add_submodule("SANALYZER", sa_mode)
         else:
             self.log.info("Spectrum Analyzer mode is not available on this "
                           "instrument.")
@@ -699,7 +699,7 @@ class FSV3030(VisaInstrument):
         with DelayedKeyboardInterrupt():
             while x !="1":
                 x = self.ask("*OPC; *ESR?")
-        print("scan finished")
+        print("measurement finished")
 
     def _options(self) -> Tuple[str, ...]:
         """
